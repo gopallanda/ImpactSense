@@ -3,6 +3,9 @@ import { Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
 import "./Dashboard.css";
 
+
+const API_BASE = process.env.REACT_APP_API_URL || "http://127.0.0.1:5000";
+
 function Dashboard() {
   const [inputs, setInputs] = useState({
     magnitude: 7,
@@ -14,18 +17,17 @@ function Dashboard() {
   const [alert, setAlert] = useState("");
   const [dataset, setDataset] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [useSliders, setUseSliders] = useState(true); // NEW toggle state
+  const [useSliders, setUseSliders] = useState(true);
 
   const handleChange = (e) => {
     const value = parseFloat(e.target.value);
     setInputs({ ...inputs, [e.target.id]: isNaN(value) ? 0 : value });
   };
 
-
   const predict = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://127.0.0.1:5000/predict", {
+      const response = await fetch(`${API_BASE}/predict`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(inputs),
@@ -34,18 +36,17 @@ function Dashboard() {
       const data = await response.json();
       setAlert(data.alert);
     } catch (err) {
-      setAlert("error");
+      setAlert(`❌ Error: ${err.message}`);
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
- 
   const loadDataset = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://127.0.0.1:5000/dataset");
+      const response = await fetch(`${API_BASE}/dataset`);
       if (!response.ok) throw new Error("Dataset fetch failed");
       const data = await response.json();
       setDataset(data.rows);
@@ -56,7 +57,6 @@ function Dashboard() {
     }
   };
 
-  
   const severityMap = {
     green: { value: 25, color: "green", text: "✅ Safe (Green)", bg: "#e6ffe6" },
     yellow: { value: 50, color: "gold", text: "⚠️ Caution (Yellow)", bg: "#fff9e6" },
@@ -71,7 +71,6 @@ function Dashboard() {
     bg: "#ddd",
   };
 
-  // Chart data
   const chartData = {
     datasets: [
       {
