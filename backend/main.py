@@ -2,7 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import pandas as pd
-from sklearn.tree import DecisionTreeClassifier
+import joblib
+import numpy as np
 
 app = FastAPI()
 
@@ -15,14 +16,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load your existing dataset
-df = pd.read_csv("earthquake_alert_balanced_dataset.csv")
+# Load pre-trained gradient boosting model (only once at startup)
+model = joblib.load("gradient_boosting_model.pkl")
 
-# Train Decision Tree model once at startup
-X = df[["magnitude", "depth", "cdi", "mmi", "sig"]]
-y = df["alert"]
-model = DecisionTreeClassifier()
-model.fit(X, y)
+# Lazy load dataset only when needed
+df = None
+
 
 # Input schema
 class InputData(BaseModel):
@@ -32,12 +31,19 @@ class InputData(BaseModel):
     mmi: float
     sig: float
 
+
 @app.post("/predict")
-def predict(data: InputData):
-    input_vec = [[data.magnitude, data.depth, data.cdi, data.mmi, data.sig]]
+async def predict(data: InputData):
+    # Use numpy array for faster prediction
+    input_vec = np.array([[data.magnitude, data.depth, data.cdi, data.mmi, data.sig]])
     prediction = model.predict(input_vec)[0]
-    return {"alert": prediction}
+    return {"alert": int(prediction)}
+
 
 @app.get("/dataset")
-def get_dataset_preview():
+async def get_dataset_preview():
+    global df
+    # Lazy load dataset only when this endpoint is called
+    if df is None:
+        df = pd.read_csv("earthquake_alert_balanced_dataset.csv")
     return {"rows": df.to_dict(orient="records")}

@@ -3,7 +3,6 @@ import { Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
 import "./Dashboard.css";
 
-
 const API_BASE = process.env.REACT_APP_API_URL || "http://127.0.0.1:5000";
 
 function Dashboard() {
@@ -58,11 +57,31 @@ function Dashboard() {
   };
 
   const severityMap = {
-    green: { value: 25, color: "green", text: "✅ Safe (Green)", bg: "#e6ffe6" },
-    yellow: { value: 50, color: "gold", text: "⚠️ Caution (Yellow)", bg: "#fff9e6" },
-    orange: { value: 75, color: "orange", text: "🔶 Warning (Orange)", bg: "#ffe6cc" },
+    green: {
+      value: 25,
+      color: "green",
+      text: "✅ Safe (Green)",
+      bg: "#e6ffe6",
+    },
+    yellow: {
+      value: 50,
+      color: "gold",
+      text: "⚠️ Caution (Yellow)",
+      bg: "#fff9e6",
+    },
+    orange: {
+      value: 75,
+      color: "orange",
+      text: "🔶 Warning (Orange)",
+      bg: "#ffe6cc",
+    },
     red: { value: 100, color: "red", text: "🚨 Danger (Red)", bg: "#ffe6e6" },
-    error: { value: 0, color: "gray", text: "❌ Error fetching alert", bg: "#f0f0f0" },
+    error: {
+      value: 0,
+      color: "gray",
+      text: "❌ Error fetching alert",
+      bg: "#f0f0f0",
+    },
   };
   const severity = severityMap[alert] || {
     value: 0,

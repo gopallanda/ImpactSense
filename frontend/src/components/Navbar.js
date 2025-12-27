@@ -4,7 +4,7 @@ import "../index.css";
 function Navbar() {
   return (
     <nav className="navbar">
-      <div className="logo">🌍 QuakeAlert</div>
+      <div className="logo">🌍 ImpactSense</div>
       <ul className="nav-links">
         <li><a href="/">Home</a></li>
         <li><a href="/dashboard">Dashboard</a></li>

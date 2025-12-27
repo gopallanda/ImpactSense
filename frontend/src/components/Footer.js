@@ -4,7 +4,7 @@ import "../index.css";
 function Footer() {
   return (
     <footer className="footer">
-      <p>© 2025 QuakeAlert | Built for Earthquake prediction</p>
+      <p>© 2025 ImpactSense | Built for Earthquake prediction</p>
     </footer>
   );
 }

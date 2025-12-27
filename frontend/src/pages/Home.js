@@ -7,7 +7,7 @@ function Home() {
 
   return (
     <section className="hero">
-      <h1>🌍 QuakeAlert</h1>
+      <h1>🌍 ImpactSense</h1>
       <p>Real-time earthquake prediction and dataset insights.</p>
       <button onClick={() => navigate("/dashboard")}>Get Started</button>
     </section>
