@@ -64,5 +64,3 @@ After experimentation and performance comparison, **Gradient Boosting** was sele
 
 The trained model was saved and loaded using a serialized file (`.pkl`) to ensure fast and consistent predictions during deployment.
 
-## 🏗️ Project Structure
-
