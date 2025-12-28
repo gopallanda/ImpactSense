@@ -3,7 +3,7 @@ import { Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
 import "./Dashboard.css";
 
-const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://127.0.0.1:5000";
+const API_BASE = import.meta.env.VITE_BACKEND_URL;
 
 
 function Dashboard() {
